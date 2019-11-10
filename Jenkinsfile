@@ -18,6 +18,14 @@ pipeline {
                 '''
 
             }
+
+	     post {
+                success {
+                   archiveArtifacts artifacts: 'target/*.jar', onlyIfSuccessful: true
+                }
+             }
+
+
         }
         stage('Test') {
             steps {
@@ -27,6 +35,13 @@ pipeline {
                 
                 '''
             }
+
+            post {
+        	always {
+            junit 'target/surefire-reports/*.xml'
+        }
+    } 
+
         }
 
         stage('Push') {
